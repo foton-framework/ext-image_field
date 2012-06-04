@@ -122,7 +122,8 @@ td.divider {
 		<? foreach ($rows as $row): ?>
 			<td class="info">
 				<span class="size"><?=$row->size ?></span>
-				<a href="<?=$row->url ?>" target="_blank">[OPEN]</a>
+				<a href="<?=$row->url ?>" target="_blank">[IMG]</a> &nbsp;
+				<? if ($row->full): ?><a href="<?=$row->full ?>" target="_blank">[PAGE]</a><? endif ?>
 				<span class="ext"><?=$row->ext ?></span>
 			</td>
 		<? endforeach ?>

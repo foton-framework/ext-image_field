@@ -2,7 +2,7 @@
 <style type="text/css">
 	.eif_container {background:#DDD; padding:5px; border-radius:5px; border:1px solid #AAA}
 	.eif_container td {white-space:nowrap; padding:0 10px !important; vertical-align:middle;}
-	.eif_container iframe {border:1px solid #CCC; background:#FFF; width:99%; height:220px; margin:0; padding:0;}
+	.eif_container iframe {border:1px solid #CCC; background:#FFF; width:99%; height:400px; margin:0; padding:0;}
 	.eif_container .eif_target_btn {display:block; float:left; background:#FFF; padding:5px 10px; border:1px solid #AAA; margin:0 0 0 10px; border-radius:3px}
 	.eif_container .eif_file {float:left;  background:#FFF; width:250px !important;}
 	.eif_container .eif_file input {border:inherit!important; width:200px !important;}
@@ -17,7 +17,7 @@
 	var eif_request_str = function(f, t, q, p)
 	{
 		t = t || eif_current[f].target;
-		q = q || eif_current[f].query;
+		q = q || eif_current[f].query.replace(/[ ]+/ig, '%20');
 		p = p || eif_current[f].page;
 		return eif_base_url + t + '/?parse=1&field='+f+'&u=' + encodeURIComponent((eif_targets[t].query.replace('%s', q).replace('%d', p * eif_targets[t].page_iteration)));
 	}

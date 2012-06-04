@@ -2,9 +2,9 @@
 
 
 // 'img' => array(
-// 	'label'   => 'Изображение',
-// 	'field'   => array('callback' => 'ext.image_field.field', 'args'=>(array)'img'),
-// 	'rules'   => 'callback[ext.image_field.upload,img]|callback[com.drugs.model.upload,img]',
+// 'label'   => 'Изображение',
+// 'field'   => array('callback' => 'ext.image_field.field', 'args'=>(array)'img'),
+// 'rules'   => "callback[ext.image_field.upload,img]|callback[model.{$this->table}.upload,img]",
 // ),
 
 
@@ -23,8 +23,9 @@ class EXT_Image_Field
 			'query'     => 'https://www.google.com/search?q=%s&hl=en&gbv=1&tbm=isch&ei=PUXJT9SJH-OI4gTiwtwy&start=%d&sa=N',
 			'cut_str'   => '<table class="images_table"',
 			'src_ereg'  => 'imgurl=(.*?)&amp;',
+			'full_ereg' => 'imgrefurl=(.*?)&amp;',
 			'size_ereg' => 'h=(\d+)&amp;w=(\d+)&amp;',
-			'columns'   => 6,
+			'columns'   => 4,
 			'page_iteration' => 20,
 		),
 		'yandex' => array(
@@ -32,7 +33,8 @@ class EXT_Image_Field
 			'query'     => 'http://images.yandex.ru/yandsearch?text=%s&p=%d&rpt=image',
 			'cut_str'   => '<div id="result"',
 			'src_ereg'  => 'img_url=(.*?)&amp;',
-			'columns'   => 5,
+			'full_ereg' => FALSE,
+			'columns'   => 4,
 			'page_iteration' => 1,
 		),
 	);
@@ -53,6 +55,7 @@ class EXT_Image_Field
 		$target    = $this->targets[$target_key];
 		$src_ereg  = $target['src_ereg'];
 		$size_ereg = isset($target['size_ereg']) ? $target['size_ereg'] : FALSE;
+		$full_ereg = isset($target['full_ereg']) ? $target['full_ereg'] : FALSE;
 		$columns   = isset($target['columns']) ? $target['columns'] : 5;
 
 		if (($pos = mb_strpos($html, $target['cut_str'])) === FALSE)
@@ -84,6 +87,7 @@ class EXT_Image_Field
 
 			$url  = urldecode(preg_replace("@.*{$src_ereg}.*@siu", '$1', $row['href']));
 			$size = $size_ereg ? preg_replace("@.*{$size_ereg}.*@siu", '$1&times;$2', $row['href']) : FALSE;
+			$full = $full_ereg ? urldecode(preg_replace("@.*{$full_ereg}.*@siu", '$1', $row['href'])) : FALSE;
 			$ext  = preg_replace('@.*?([^.]+)$@sui', '$1', $url);
 			if (strlen($ext)>5) $ext = FALSE;
 
@@ -95,6 +99,7 @@ class EXT_Image_Field
 				'thumb' => $row['src'],
 				'url'   => substr($url, 0, 4) !== 'http' ? 'http://' . $url : $url,
 				'size'  => $size,
+				'full'  => $full,
 				'ext'   => $ext
 			);
 			$index++;
