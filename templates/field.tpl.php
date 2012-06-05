@@ -17,7 +17,7 @@
 	var eif_request_str = function(f, t, q, p)
 	{
 		t = t || eif_current[f].target;
-		q = q || eif_current[f].query.replace(/[ ]+/ig, '%20');
+		q = (q || eif_current[f].query).replace(/[ ]+/ig, '%20');
 		p = p || eif_current[f].page;
 		return eif_base_url + t + '/?parse=1&field='+f+'&u=' + encodeURIComponent((eif_targets[t].query.replace('%s', q).replace('%d', p * eif_targets[t].page_iteration)));
 	}
