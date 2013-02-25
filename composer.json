@@ -1,5 +1,5 @@
 {
-    "name":    "foton/image_field",
+    "name":    "foton/imagefield",
     "type":    "foton-extension",
     "license":  "MIT",
     "require": {
